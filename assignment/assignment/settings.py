@@ -42,8 +42,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'interviewcalendar.apps.InterviewcalendarConfig'
+    'interviewcalendar.apps.InterviewcalendarConfig',
+    'drf_spectacular',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Interview Calendar API',
+    'DESCRIPTION': 'Project made for xgeeks',
+    'VERSION': '0.1.0',
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

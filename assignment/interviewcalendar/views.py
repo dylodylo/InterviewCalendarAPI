@@ -3,10 +3,12 @@ from .serializers import UserSerializer
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .permissions import IsUserOnly
 
 class UserUpdate(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsUserOnly]
 
 
 @api_view(['GET'])    

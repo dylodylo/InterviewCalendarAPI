@@ -26,6 +26,8 @@ def dates_list(request, pk):
                 else:
                     candidate_hours = candidate_slots[date]
                     recruiter_hours = recruiter_slots[date]
-                    candidate_slots[date] = list(set(candidate_hours) & set(recruiter_hours))
+                    intersection = list(set(candidate_hours) & set(recruiter_hours))
+                    intersection.sort()
+                    candidate_slots[date] = intersection
 
         return Response(candidate_slots)

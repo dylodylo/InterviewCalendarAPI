@@ -14,7 +14,7 @@ class UserUpdate(generics.UpdateAPIView):
 @extend_schema( 
  parameters=[OpenApiParameter( 
      name='r_ids', 
-     type={'type': 'list'}, 
+     type={'type': 'string'}, 
      location=OpenApiParameter.QUERY, 
      required=True, 
      style='form', 
@@ -30,17 +30,17 @@ def dates_list(request, pk):
         recruiters_ids = request.query_params.get('r_ids')
         recruiters_ids = recruiters_ids.split(',')
         recruiters = User.objects.filter(pk__in=recruiters_ids)
-
+        slots = candidate_slots.copy()
         for recruiter in recruiters:
             recruiter_slots = recruiter.slots
             for date in candidate_slots:
                 if date not in recruiter_slots:
-                    del candidate_slots[date]
+                    del slots[date]
                 else:
-                    candidate_hours = candidate_slots[date]
+                    candidate_hours = slots[date]
                     recruiter_hours = recruiter_slots[date]
                     intersection = list(set(candidate_hours) & set(recruiter_hours))
                     intersection.sort()
-                    candidate_slots[date] = intersection
+                    slots[date] = intersection
 
-        return Response(candidate_slots)
+        return Response(slots)

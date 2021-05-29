@@ -9,5 +9,3 @@ urlpatterns = [
     path('users/schema', SpectacularAPIView.as_view(), name='schema'),
     path('users', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 ]
-
-urlpatterns = format_suffix_patterns(urlpatterns)

@@ -4,19 +4,30 @@ from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .permissions import IsUserOnly
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 
 class UserUpdate(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsUserOnly]
 
-
+@extend_schema( 
+ parameters=[OpenApiParameter( 
+     name='r_ids', 
+     type={'type': 'list'}, 
+     location=OpenApiParameter.QUERY, 
+     required=True, 
+     style='form', 
+     explode=False, 
+ )], 
+ responses=OpenApiTypes.OBJECT, 
+) 
 @api_view(['GET'])    
 def dates_list(request, pk):
     if request.method == 'GET':
         candidate = User.objects.get(pk=pk)
         candidate_slots = candidate.slots
-        recruiters_ids = request.query_params.get('r_ids')  # u'2,3,4' <- this is unicode
+        recruiters_ids = request.query_params.get('r_ids')
         recruiters_ids = recruiters_ids.split(',')
         recruiters = User.objects.filter(pk__in=recruiters_ids)
 

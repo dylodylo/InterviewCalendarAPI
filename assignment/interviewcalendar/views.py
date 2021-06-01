@@ -7,6 +7,9 @@ from .permissions import IsUserOnly
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 
 class UserUpdate(generics.UpdateAPIView):
+    """
+    Put new slots to user.
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsUserOnly]
@@ -19,8 +22,10 @@ class UserUpdate(generics.UpdateAPIView):
      required=True, 
      style='form', 
      explode=False, 
+     description="Recruiters ids, divided by ','"
  )], 
  responses=OpenApiTypes.OBJECT, 
+ description="Get list of same dates available for candidate (id) and recuriters (r_ids)"
 ) 
 @api_view(['GET'])    
 def dates_list(request, pk):

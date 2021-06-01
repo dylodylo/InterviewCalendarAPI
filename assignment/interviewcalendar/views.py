@@ -26,21 +26,15 @@ class UserUpdate(generics.UpdateAPIView):
 def dates_list(request, pk):
     if request.method == 'GET':
         candidate = User.objects.get(pk=pk)
-        candidate_slots = candidate.slots
+        candidate_slots = candidate.slots['slots']
         recruiters_ids = request.query_params.get('r_ids')
         recruiters_ids = recruiters_ids.split(',')
         recruiters = User.objects.filter(pk__in=recruiters_ids)
         slots = candidate_slots.copy()
         for recruiter in recruiters:
-            recruiter_slots = recruiter.slots
+            recruiter_slots = recruiter.slots['slots']
             for date in candidate_slots:
-                if date not in recruiter_slots:
-                    del slots[date]
-                else:
-                    candidate_hours = slots[date]
-                    recruiter_hours = recruiter_slots[date]
-                    intersection = list(set(candidate_hours) & set(recruiter_hours))
-                    intersection.sort()
-                    slots[date] = intersection
+                if date not in recruiter_slots and date in slots:
+                    slots.remove(date)
 
         return Response(slots)

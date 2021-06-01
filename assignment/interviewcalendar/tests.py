@@ -17,7 +17,7 @@ class UserModelTest(TestCase):
         self.testuser2 = User.objects.create_user(username='TestUser2', password='password', slots={"slots":["20/06/2021 12:00-13:00", "20/06/2021 14:00-15:00"]})
         self.testuser3 = User.objects.create_user(username='TestUser3', password='password', slots={"slots":["20/06/2021 12:00-13:00", "20/06/2021 15:00-16:00"]})
         self.valid_slots = {"slots":["20/06/2021 11:00-12:00"]}
-        self.valid_added_slots = {"slots":["20/06/2021 12:00-13:00", "20/06/2021 13:00-14:00", "20/06/2021 11:00-12:00"]} #combine two dicts
+        self.valid_added_slots = {**self.testuser1.slots, **self.valid_slots}
         self.client = APIClient()
         self.valid_slotes_returned = ["20/06/2021 12:00-13:00"]
 

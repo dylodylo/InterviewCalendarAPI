@@ -27,43 +27,43 @@ class UserModelTest(TestCase):
 
     def test_valid_patch(self):
         self.client.login(username=self.testuser1.username, password='password')
-        response = self.client.patch(f'/users/{self.testuser1.id}', data=json.dumps({"slots": self.valid_slots}), content_type='application/json')
+        response = self.client.patch(reverse('slots_update', args=(self.testuser1.id,)), data=json.dumps({"slots": self.valid_slots}), content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_valid_patch_user_slots(self):
         self.client.login(username=self.testuser1.username, password='password')
-        response = self.client.patch(f'/users/{self.testuser1.id}', data=json.dumps({"slots": self.valid_slots}), content_type='application/json')
+        response = self.client.patch(reverse('slots_update', args=(self.testuser1.id,)), data=json.dumps({"slots": self.valid_slots}), content_type='application/json')
         self.testuser1.refresh_from_db()
         self.assertEqual(self.valid_added_slots['slots'].sort(), self.testuser1.slots['slots'].sort())
         self.client.logout()
 
     def test_invalid_value_patch(self):
         self.client.login(username=self.testuser1.username, password='password')
-        url = f'/users/{self.testuser1.id}'
+        url = reverse('slots_update', args=(self.testuser1.id,))
         invalid_value = ["20/06/2021 11:00-12:00"]
         response = self.client.patch(url, data=json.dumps({"slots": invalid_value}), content_type='application/json')
         self.assertNotEqual(response.status_code, status.HTTP_200_OK)
 
     def test_invalid_date_patch(self):
         self.client.login(username=self.testuser1.username, password='password')
-        url = f'/users/{self.testuser1.id}'
+        url = reverse('slots_update', args=(self.testuser1.id,))
         invalid_date = ["20/06/21 11:00-12:00"]
         response = self.client.patch(url, data=json.dumps({"slots": invalid_date}), content_type='application/json')
         self.assertNotEqual(response.status_code, status.HTTP_200_OK)
 
     def test_invalid_hours_patch(self):
         self.client.login(username=self.testuser1.username, password='password')
-        url = f'/users/{self.testuser1.id}'
+        url = reverse('slots_update', args=(self.testuser1.id,))
         invalid_hours = ["20/06/2021 11:30-12:00"]
         response = self.client.patch(url, data=json.dumps({"slots": invalid_hours}), content_type='application/json')
         self.assertNotEqual(response.status_code, status.HTTP_200_OK)
 
     def test_valid_dates_list(self):
-        response = self.client.get(f'/users/{self.testuser1.id}/dates/', {"r_ids": "2,3"})
+        response = self.client.get(reverse('get_slots', args=(self.testuser1.id,)), {"r_ids": "2,3"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_valid_dates_list_return(self):
-        response = self.client.get(f'/users/{self.testuser1.id}/dates/', {"r_ids": "2,3"})
+        response = self.client.get(reverse('get_slots', args=(self.testuser1.id,)), {"r_ids": "2,3"})
         data = response.json()
         self.assertEqual(data, self.valid_slotes_returned)
 

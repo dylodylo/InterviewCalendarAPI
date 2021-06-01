@@ -1,27 +1,35 @@
-# xgeeks tech assignment
+# Interview Calendar API
 
-In this repo you can find the tech challenge we use to evaluate our candidates as part of the interview process. The idea is to approach back-end development.
+### How to run API
 
-Here, you can find the designated assignment details to be evaluated:
-- [ASSIGNMENT](assignment.md)
+```
+git clone git@gitlab.com:ki-group-pt/xgeekshq/assignments/be-assignment-dylodylo.git
+cd be-assignment-dylodylo
+sudo docker build --tag calendar_api:latest .
+sudo docker run --name calendar_api -d -p 8000:8000 calendar_api:latest
+```
 
->When delivering the assignments, the closer to production ready it is, the better.
-It's a great plus if you make our job of reviewing the challenge easier by virtualizing/containerizing it so that it runs smoothly on any machine and also give detailed instructions on how to run it.
+### Already created users
 
-We will discuss the project from a few different points:
+- superuser (username: admin, password: admin, id: 1)
+- recruiters (usernames: recruiter1, recruiter2, password: recruiter, id: 2, 3)
+- candidates (usernames: candidate1, candidate2, password: recruiter, id: 4, 5)
 
-**Architecture**. You’re welcome to organize the code in a way that you believe suits best. Here, we’ll discuss possible alternatives and exchange a few ideas
 
-**Engineering**. We’ll discuss this point based on the actual code: how it’s organized and written, if it’s easy to get picked up by a new engineer in a team (or in community, if we talk about open source). Of course it’s important that the code is readable, but we’ll go beyond that and talk about coherence of the codebase and its hypothetical (or potential) future.
+### How to use API
 
-**Tooling**. How does a completely unfamiliar user with basic technical background get the code and run it? What programs are expected to be available on user’s computer before installing the tool? How could that user potentially do a micro-deploy on their own machine?
+**Add new slots**
 
-**Documentation**. Good code is one that documents itself, but sometimes it isn’t enough. We’ll discuss things such as quick start guide, code style and contribution guideline. It’s important that a new team member that joins the team and gets introduced to the codebase, or another team that develops integration, has a really good time exploring the code.
+Open browser on adress 127.0.0.1:8000. Authorize yourself as user you want to add slots for and use PUT bookmark. In request body replace `{}` after in `slots` key to `{'slots': [dates]}. In the end request body could look like this:
+`"slots": {"slots":["20/06/2021 12:00-13:00", "20/06/2021 15:00-16:00"]}` 
 
-In order to do the assignment please use this repository and notify us when ready in order for us to evaluate the assignment and continue with the interview process.
+**Get periods which are same for candidate and recruiters**
 
-Remember, we are only building a team! There will be a lot of opportunities to learn and go through peer-driven quality review, so we care more about what knowledge and experience you bring to the team. Thank you for taking the time, and we are looking forward to our next interview that will follow up on this little project.
+Open browser on adress 127.0.0.1:8000 and use GET bookmark. Put candidate id in `id` field and recruiters ids in `r_ids` field.
+In response body you'll get list of all dates when recruiters and candidate are available.
 
-### In case of issues or doubts
+### Things to improve
 
-Please send an email to **career@xgeeks.io** and will get back to you as soon as possible
+- Better tests
+- Add database to container
+- Distinction between recruiter and candidate

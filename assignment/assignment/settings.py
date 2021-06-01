@@ -54,6 +54,7 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Interview Calendar API',
     'DESCRIPTION': 'Project made for xgeeks',
     'VERSION': '0.1.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 MIDDLEWARE = [
